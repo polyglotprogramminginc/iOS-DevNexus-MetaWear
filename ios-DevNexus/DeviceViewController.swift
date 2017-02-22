@@ -17,6 +17,9 @@ class DeviceViewController: UIViewController {
   @IBOutlet weak var xAxis: UILabel!
   @IBOutlet weak var yAxis: UILabel!
   @IBOutlet weak var zAxis: UILabel!
+  @IBOutlet weak var readThermistor: UIButton!
+  @IBOutlet weak var clearThermistor: UIButton!
+  @IBOutlet weak var temperature: UILabel!
   
   var device: MBLMetaWear!
   
@@ -74,7 +77,7 @@ class DeviceViewController: UIViewController {
       self.stepEvent = accelerometerMMA8452Q.dataReadyEvent
       stepEvent.startNotificationsAsync {(data: MBLAccelerometerData?, error: Error?) -> Void in
         if let axisData = data {
-          NSLog("X = %f, Y = %f, Z = %f", axisData.x, axisData.y, axisData.z);
+          NSLog("X = %f, Y = %f, Z = %f", axisData.x, axisData.y, axisData.z)
           self.xAxis.text = NSString(format:"%d", axisData.x) as String
           self.yAxis.text = NSString(format:"%d", axisData.y) as String
           self.zAxis.text = NSString(format:"%d", axisData.z) as String
@@ -88,5 +91,17 @@ class DeviceViewController: UIViewController {
     self.xAxis.text = "---"
     self.yAxis.text = "---"
     self.zAxis.text = "---"
+  }
+  
+  @IBAction func readTemperature(sender: UIButton) {
+    let selected = device.temperature!.onDieThermistor
+    selected.readAsync().success { result in
+      NSLog("Temperature = %f", result.value.floatValue)
+      self.temperature.text = result.value.stringValue.appending("°C")
+    }
+  }
+  
+  @IBAction func clearTemperature(sender: UIButton) {
+    self.temperature.text = "---°C"
   }
 }
