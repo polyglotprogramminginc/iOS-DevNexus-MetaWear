@@ -14,14 +14,14 @@ class DeviceViewController: UIViewController {
   @IBOutlet weak var deviceStatus: UILabel!
   @IBOutlet weak var startAccelerometer: UIButton!
   @IBOutlet weak var stopAccelerometer: UIButton!
-  @IBOutlet weak var stepCount: UILabel!
+  @IBOutlet weak var xAxis: UILabel!
+  @IBOutlet weak var yAxis: UILabel!
+  @IBOutlet weak var zAxis: UILabel!
   
   var device: MBLMetaWear!
   
-  var accelerometerBMI160: MBLAccelerometerBMI160!
-  var stepEvent: MBLEvent<MBLNumericData>!
-  var accelerometerData: NSMutableArray = NSMutableArray(capacity: 1000)
-  var steps: Int = 0
+  var accelerometerMMA8452Q: MBLAccelerometerMMA8452Q!
+  var stepEvent: MBLEvent<MBLAccelerometerData>!
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -31,10 +31,8 @@ class DeviceViewController: UIViewController {
       NSLog("We are connected!")
     }
     
-    if device.accelerometer is MBLAccelerometerBMI160 {
-      accelerometerBMI160 = device.accelerometer as! MBLAccelerometerBMI160
-      accelerometerBMI160.sampleFrequency = 100
-      accelerometerBMI160.fullScaleRange = MBLAccelerometerBoschRange.range4G
+    if device.accelerometer is MBLAccelerometerMMA8452Q {
+      accelerometerMMA8452Q = device.accelerometer as! MBLAccelerometerMMA8452Q
     }
   }
   
@@ -63,14 +61,23 @@ class DeviceViewController: UIViewController {
   }
   
   @IBAction func startAccelerometer(sender: UIButton) {
-    if accelerometerBMI160 != nil {
-      self.stepEvent = accelerometerBMI160.stepEvent
-      stepEvent.startNotificationsAsync {(data: AnyObject?, error: Error?) -> Void in
-        if let steps = data as? MBLNumericData {
-          self.accelerometerData.add(steps)
-          self.steps += 1
-          NSLog("Total steps taken: %d", self.steps)
-          self.stepCount.text = NSString(format: "%d", self.steps) as String
+    self.startAccelerometer.isEnabled = false
+    self.stopAccelerometer.isEnabled = true
+    
+    if ((accelerometerMMA8452Q) != nil) {
+      accelerometerMMA8452Q.sampleFrequency = 100
+      accelerometerMMA8452Q.fullScaleRange = MBLAccelerometerRange.range4G
+      accelerometerMMA8452Q.highPassCutoffFreq = MBLAccelerometerCutoffFreq.higheset
+      accelerometerMMA8452Q.highPassFilter = true
+      accelerometerMMA8452Q.lowNoise = true
+      
+      self.stepEvent = accelerometerMMA8452Q.dataReadyEvent
+      stepEvent.startNotificationsAsync {(data: MBLAccelerometerData?, error: Error?) -> Void in
+        if let axisData = data {
+          NSLog("X = %f, Y = %f, Z = %f", axisData.x, axisData.y, axisData.z);
+          self.xAxis.text = NSString(format:"%d", axisData.x) as String
+          self.yAxis.text = NSString(format:"%d", axisData.y) as String
+          self.zAxis.text = NSString(format:"%d", axisData.z) as String
         }
       }
     }
@@ -78,6 +85,8 @@ class DeviceViewController: UIViewController {
   
   @IBAction func stopAccelerometer(sender: UIButton) {
     stepEvent.stopNotificationsAsync()
-    self.stepCount.text = "---"
+    self.xAxis.text = "---"
+    self.yAxis.text = "---"
+    self.zAxis.text = "---"
   }
 }

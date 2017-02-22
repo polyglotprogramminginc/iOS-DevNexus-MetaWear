@@ -21,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		0C2C3FC95AAD288F8654FA90 /* Pods-ios-DevNexus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-DevNexus.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios-DevNexus/Pods-ios-DevNexus.release.xcconfig"; sourceTree = "<group>"; };
+		422C81471E5D5DA200A38317 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		42A805721E5D276B00F9E916 /* ios-DevNexus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-DevNexus.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A805751E5D276B00F9E916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42A805771E5D276B00F9E916 /* DeviceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +98,7 @@
 		D8746B443FFC3F6A5EFA67F7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				422C81471E5D5DA200A38317 /* QuartzCore.framework */,
 				42A8058B1E5D2B4C00F9E916 /* Bolts.framework */,
 				42A8058C1E5D2B4C00F9E916 /* MBProgressHUD.framework */,
 				42A8058D1E5D2B4C00F9E916 /* MetaWear.framework */,
@@ -141,6 +143,7 @@
 					42A805711E5D276B00F9E916 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = CHPT33FFY2;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -347,6 +350,7 @@
 			baseConfigurationReference = 79155ADD20EE6AD4F24B200D /* Pods-ios-DevNexus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = CHPT33FFY2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -358,6 +362,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.polyglotprogramminginc.ios-DevNexus";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -367,6 +372,7 @@
 			baseConfigurationReference = 0C2C3FC95AAD288F8654FA90 /* Pods-ios-DevNexus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = CHPT33FFY2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
